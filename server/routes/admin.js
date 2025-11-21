@@ -3,6 +3,23 @@ const router = express.Router();
 const jwt = require("jsonwebtoken");
 const { User, Station, Post, Report } = require("../models");
 
+const JWT_SECRET = process.env.JWT_SECRET || "secret-change-me";
+
+function adminOnly(req, res, next) {
+  const auth = req.headers.authorization;
+  if (!auth) return res.status(401).json({ error: "No token" });
+  const token = auth.split(" ")[1];
+  try {
+    const payload = jwt.verify(token, JWT_SECRET);
+    if (payload.role !== "admin")
+      return res.status(403).json({ error: "Admins only" });
+    req.user = payload;
+    next();
+  } catch (e) {
+    return res.status(401).json({ error: "Invalid token" });
+  }
+}
+
 // Admin: delete any post
 router.delete("/posts/:id", adminOnly, async (req, res) => {
   const { id } = req.params;
@@ -28,22 +45,14 @@ router.put("/reports/:id", adminOnly, async (req, res) => {
   res.json(report);
 });
 
-const JWT_SECRET = process.env.JWT_SECRET || "secret-change-me";
-
-function adminOnly(req, res, next) {
-  const auth = req.headers.authorization;
-  if (!auth) return res.status(401).json({ error: "No token" });
-  const token = auth.split(" ")[1];
-  try {
-    const payload = jwt.verify(token, JWT_SECRET);
-    if (payload.role !== "admin")
-      return res.status(403).json({ error: "Admins only" });
-    req.user = payload;
-    next();
-  } catch (e) {
-    return res.status(401).json({ error: "Invalid token" });
-  }
-}
+// Admin: delete report
+router.delete("/reports/:id", adminOnly, async (req, res) => {
+  const { id } = req.params;
+  const report = await Report.findByPk(id);
+  if (!report) return res.status(404).json({ error: "Not found" });
+  await report.destroy();
+  res.json({ success: true });
+});
 
 // Manage users
 router.get("/users", adminOnly, async (req, res) => {
@@ -59,6 +68,20 @@ router.put("/users/:id/role", adminOnly, async (req, res) => {
   user.role = role;
   await user.save();
   res.json({ id: user.id, username: user.username, role: user.role });
+});
+
+router.delete("/users/:id", adminOnly, async (req, res) => {
+  const { id } = req.params;
+  const user = await User.findByPk(id);
+  if (!user) return res.status(404).json({ error: "Not found" });
+
+  // Prevent deleting self
+  if (user.id === req.user.id) {
+    return res.status(400).json({ error: "Cannot delete yourself" });
+  }
+
+  await user.destroy();
+  res.json({ success: true });
 });
 
 // Manage stations

@@ -18,7 +18,7 @@ function auth(req, res, next) {
 }
 
 // Edit report (user can update description)
-router.put(":id", auth, async (req, res) => {
+router.put("/:id", auth, async (req, res) => {
   const { id } = req.params;
   const { description } = req.body;
   const report = await Report.findByPk(id);
@@ -31,7 +31,7 @@ router.put(":id", auth, async (req, res) => {
 });
 
 // Delete report (user can delete their own)
-router.delete(":id", auth, async (req, res) => {
+router.delete("/:id", auth, async (req, res) => {
   const { id } = req.params;
   const report = await Report.findByPk(id);
   if (!report) return res.status(404).json({ error: "Not found" });

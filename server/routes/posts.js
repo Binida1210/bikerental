@@ -18,7 +18,7 @@ function auth(req, res, next) {
 }
 
 // Edit post (user can update title/content)
-router.put(":id", auth, async (req, res) => {
+router.put("/:id", auth, async (req, res) => {
   const { id } = req.params;
   const { title, content } = req.body;
   const post = await Post.findByPk(id);
@@ -32,7 +32,7 @@ router.put(":id", auth, async (req, res) => {
 });
 
 // Delete post (user can delete their own)
-router.delete(":id", auth, async (req, res) => {
+router.delete("/:id", auth, async (req, res) => {
   const { id } = req.params;
   const post = await Post.findByPk(id);
   if (!post) return res.status(404).json({ error: "Not found" });
