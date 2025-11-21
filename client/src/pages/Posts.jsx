@@ -1,21 +1,24 @@
-import React, { useEffect, useState } from 'react'
-import API from '../api'
+import React, { useEffect, useState } from "react";
+import API from "../api";
 
-export default function Posts(){
-  const [posts, setPosts] = useState([])
-  const [title, setTitle] = useState('')
-  const [content, setContent] = useState('')
+export default function Posts() {
+  const [posts, setPosts] = useState([]);
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
 
-  useEffect(()=>{ fetchPosts() }, [])
-  async function fetchPosts(){
-    const res = await API.get('/posts');
+  useEffect(() => {
+    fetchPosts();
+  }, []);
+  async function fetchPosts() {
+    const res = await API.get("/posts");
     setPosts(res.data);
   }
 
-  async function submit(e){
+  async function submit(e) {
     e.preventDefault();
-    await API.post('/posts', { title, content });
-    setTitle(''); setContent('');
+    await API.post("/posts", { title, content });
+    setTitle("");
+    setContent("");
     fetchPosts();
   }
 
@@ -24,12 +27,24 @@ export default function Posts(){
       <h3>Posts</h3>
       <div className="card">
         <form onSubmit={submit}>
-          <div><input placeholder="title" value={title} onChange={e=>setTitle(e.target.value)} /></div>
-          <div><textarea placeholder="content" value={content} onChange={e=>setContent(e.target.value)} /></div>
+          <div>
+            <input
+              placeholder="title"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+            />
+          </div>
+          <div>
+            <textarea
+              placeholder="content"
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+            />
+          </div>
           <button type="submit">Post</button>
         </form>
       </div>
-      {posts.map(p => (
+      {posts.map((p) => (
         <div key={p.id} className="card">
           <strong>{p.title}</strong>
           <div>{p.content}</div>
@@ -37,5 +52,5 @@ export default function Posts(){
         </div>
       ))}
     </div>
-  )
+  );
 }

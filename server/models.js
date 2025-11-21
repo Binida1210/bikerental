@@ -40,8 +40,8 @@ Report.belongsTo(Station);
 Report.belongsTo(User);
 
 // Rental records: user rents from a station, then returns to a station
-const Rental = sequelize.define('Rental', {
-  status: { type: DataTypes.STRING, allowNull: false, defaultValue: 'active' }, // active|returned
+const Rental = sequelize.define("Rental", {
+  status: { type: DataTypes.STRING, allowNull: false, defaultValue: "active" }, // active|returned
   startedAt: { type: DataTypes.DATE, defaultValue: DataTypes.NOW },
   endedAt: { type: DataTypes.DATE, allowNull: true },
 });
@@ -49,10 +49,9 @@ const Rental = sequelize.define('Rental', {
 User.hasMany(Rental);
 Rental.belongsTo(User);
 
-Station.hasMany(Rental, { as: 'Departures', foreignKey: 'fromStationId' });
-Station.hasMany(Rental, { as: 'Arrivals', foreignKey: 'toStationId' });
-Rental.belongsTo(Station, { as: 'fromStation', foreignKey: 'fromStationId' });
-Rental.belongsTo(Station, { as: 'toStation', foreignKey: 'toStationId' });
-
+Station.hasMany(Rental, { as: "Departures", foreignKey: "fromStationId" });
+Station.hasMany(Rental, { as: "Arrivals", foreignKey: "toStationId" });
+Rental.belongsTo(Station, { as: "fromStation", foreignKey: "fromStationId" });
+Rental.belongsTo(Station, { as: "toStation", foreignKey: "toStationId" });
 
 module.exports = { sequelize, User, Station, Post, Report, Rental };

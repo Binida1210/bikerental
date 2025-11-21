@@ -16,6 +16,7 @@ Default seeded admin: by default `username: admin`, `password: adminpass`.
 You can change the admin credentials by copying `.env.example` to `.env` and editing `ADMIN_USER` and `ADMIN_PASS` before starting the server.
 
 Example (`.env`):
+
 ```
 ADMIN_USER=admin
 ADMIN_PASS=adminpass
