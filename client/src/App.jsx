@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Login from "./pages/Login";
 import Stations from "./pages/Stations";
-import AdminDashboard from "./pages/AdminDashboard";
+import AdminIndex from "./admin/index";
 import Register from "./pages/Register";
 import Profile from "./pages/Profile";
 import Posts from "./pages/Posts";
@@ -40,6 +40,8 @@ export default function App() {
 
   function logout() {
     localStorage.removeItem("token");
+    localStorage.removeItem("isAdmin");
+    localStorage.removeItem("username");
     setTok(null);
     setPage("home");
     setToken(null);
@@ -98,7 +100,7 @@ export default function App() {
               Visualization
             </button>
           )}
-          {token && (
+          {token && localStorage.getItem("isAdmin") === "true" && (
             <button className="btn" onClick={() => setPage("admin")}>
               Admin
             </button>
@@ -123,7 +125,15 @@ export default function App() {
         {token && page === "rentals" && <Rentals />}
         {token && page === "profile" && <Profile />}
         {token && page === "visual" && <Visualization />}
-        {token && page === "admin" && <AdminDashboard />}
+        {token && page === "admin" && (
+          <AdminIndex
+            token={token}
+            setToken={setTok}
+            username={username}
+            setUsername={setUsername}
+            onLogout={logout}
+          />
+        )}
 
         {!token && page === "home" && (
           <div className="card">
