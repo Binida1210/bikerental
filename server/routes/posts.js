@@ -42,6 +42,8 @@ router.put("/:id", auth, async (req, res) => {
   const p = updatedRows[0];
   res.json({
     ...p,
+    createdAt: p.createdAt ? new Date(p.createdAt).toISOString() : null,
+    updatedAt: p.updatedAt ? new Date(p.updatedAt).toISOString() : null,
     User: p.user_id ? { id: p.user_id, username: p.user_username } : null,
   });
 });
@@ -59,14 +61,20 @@ router.delete("/:id", auth, async (req, res) => {
 });
 
 router.get("/", async (req, res) => {
+  // Some existing DBs may not have createdAt column (older schema). Check first.
+  const hasCreated = await query("SHOW COLUMNS FROM Posts LIKE 'createdAt'");
+  const orderClause = hasCreated && hasCreated.length ? "ORDER BY p.createdAt DESC" : "ORDER BY p.id DESC";
   const rows = await query(`
     SELECT p.*, u.id as user_id, u.username as user_username
     FROM Posts p
     LEFT JOIN Users u ON p.UserId = u.id
+    ${orderClause}
   `);
   // map to previous Sequelize-like shape: include nested User object
   const posts = rows.map((p) => ({
     ...p,
+    createdAt: p.createdAt ? new Date(p.createdAt).toISOString() : null,
+    updatedAt: p.updatedAt ? new Date(p.updatedAt).toISOString() : null,
     User: p.user_id ? { id: p.user_id, username: p.user_username } : null,
   }));
   res.json(posts);
@@ -86,6 +94,8 @@ router.post("/", auth, async (req, res) => {
   const p = rows[0];
   res.json({
     ...p,
+    createdAt: p.createdAt ? new Date(p.createdAt).toISOString() : null,
+    updatedAt: p.updatedAt ? new Date(p.updatedAt).toISOString() : null,
     User: p.user_id ? { id: p.user_id, username: p.user_username } : null,
   });
 });

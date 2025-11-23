@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import API from "../api";
+import { formatDateTime } from "./formatDate";
 
 export default function Rentals() {
   const [rentals, setRentals] = useState([]);
@@ -108,12 +109,10 @@ export default function Rentals() {
                 {r.toStation?.name || r.toStationId || "Not returned"}
               </div>
               <div className="rental-detail">
-                <strong>Started:</strong>{" "}
-                {new Date(r.startedAt).toLocaleString()}
+                <strong>Started:</strong> {formatDateTime(r.startedAt)}
               </div>
               <div className="rental-detail">
-                <strong>Ended:</strong>{" "}
-                {r.endedAt ? new Date(r.endedAt).toLocaleString() : "Ongoing"}
+                <strong>Ended:</strong> {r.endedAt ? formatDateTime(r.endedAt) : "Ongoing"}
               </div>
             </div>
             {r.status === "active" && (
@@ -135,8 +134,7 @@ export default function Rentals() {
           <div className="return-modal">
             <h4>Return Bike</h4>
             <p>
-              Rental #{returning.id} - Started:{" "}
-              {new Date(returning.startedAt).toLocaleString()}
+              Rental #{returning.id} - Started: {formatDateTime(returning.startedAt)}
             </p>
             <div className="form-group">
               <label className="form-label">Choose return station:</label>

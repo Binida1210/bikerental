@@ -136,11 +136,14 @@ router.get("/me", auth, async (req, res) => {
      FROM Rentals r
      LEFT JOIN Stations fs ON r.fromStationId = fs.id
      LEFT JOIN Stations ts ON r.toStationId = ts.id
-     WHERE r.UserId = ?`,
+     WHERE r.UserId = ?
+     ORDER BY r.startedAt DESC`,
     [req.user.id]
   );
   const rentals = rows.map((r) => ({
     ...r,
+    startedAt: r.startedAt ? new Date(r.startedAt).toISOString() : null,
+    endedAt: r.endedAt ? new Date(r.endedAt).toISOString() : null,
     fromStation: r.from_id ? { id: r.from_id, name: r.from_name } : null,
     toStation: r.to_id ? { id: r.to_id, name: r.to_name } : null,
   }));

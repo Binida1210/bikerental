@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import API from "../api";
+import { formatDate } from "../shared/formatDate";
 
 export default function Profile() {
   const [profile, setProfile] = useState(null);
@@ -23,7 +24,11 @@ export default function Profile() {
   }, [profile]);
   async function fetchPosts() {
     const res = await API.get("/posts");
-    setPosts(res.data.filter((p) => p.UserId === profile?.id));
+    setPosts(
+      res.data
+        .filter((p) => p.UserId === profile?.id)
+        .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+    );
   }
   async function deleteReport(id) {
     if (!window.confirm("Delete this report?")) return;
@@ -119,7 +124,7 @@ export default function Profile() {
           {reports.map((r) => (
             <li key={r.id}>
               <strong>{r.Station.name}</strong>:{" "}
-              {editReportId === r.id ? (
+                  {editReportId === r.id ? (
                 <>
                   <input
                     value={editReportDesc}
@@ -130,8 +135,7 @@ export default function Profile() {
                 </>
               ) : (
                 <>
-                  {r.description} - Status: {r.status} (
-                  {new Date(r.createdAt).toLocaleDateString()})
+                  {r.description} - Status: {r.status} ({formatDate(r.createdAt)})
                   <button onClick={() => startEditReport(r)}>Edit</button>
                   <button onClick={() => deleteReport(r.id)}>Delete</button>
                 </>

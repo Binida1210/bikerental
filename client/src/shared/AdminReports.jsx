@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { FileText, CheckCircle, RotateCcw, Trash2 } from "lucide-react";
 import API from "../api";
+import { formatDate, formatDateTime, formatTime } from "./formatDate";
 
 export default function AdminReports() {
   const [reports, setReports] = useState([]);
@@ -145,8 +146,7 @@ export default function AdminReports() {
                 </div>
                 <div className="admin-info-label">
                   Reporter: {r.User ? r.User.username : "Unknown"} | Date:{" "}
-                  {new Date(r.createdAt).toLocaleDateString()}{" "}
-                  {new Date(r.createdAt).toLocaleTimeString()}
+                  {formatDate(r.createdAt)} {formatTime(r.createdAt)}
                 </div>
               </div>
               <div className="admin-action-buttons">

@@ -206,13 +206,19 @@ router.post("/stations/:id/capacity", adminOnly, async (req, res) => {
 
 // Manage posts
 router.get("/posts", adminOnly, async (req, res) => {
+  // Check whether createdAt column exists in Posts table; fallback to id when not present
+  const hasCreated = await query("SHOW COLUMNS FROM Posts LIKE 'createdAt'");
+  const orderClause = hasCreated && hasCreated.length ? "ORDER BY p.createdAt DESC" : "ORDER BY p.id DESC";
   const rows = await query(
     `SELECT p.*, u.id as user_id, u.username as user_username
      FROM Posts p
-     LEFT JOIN Users u ON p.UserId = u.id`
+     LEFT JOIN Users u ON p.UserId = u.id
+     ${orderClause}`
   );
   const posts = rows.map((p) => ({
     ...p,
+    createdAt: p.createdAt ? new Date(p.createdAt).toISOString() : null,
+    updatedAt: p.updatedAt ? new Date(p.updatedAt).toISOString() : null,
     User: p.user_id ? { id: p.user_id, username: p.user_username } : null,
   }));
   res.json(posts);

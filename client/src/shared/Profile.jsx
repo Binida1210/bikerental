@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import API from "../api";
+import { formatDate, formatDateTime } from "./formatDate";
 
 export default function Profile() {
   const [profile, setProfile] = useState(null);
@@ -212,7 +213,7 @@ export default function Profile() {
                       <>
                         <p>{r.description}</p>
                         <div className="report-meta">
-                          <span>{new Date(r.createdAt).toLocaleDateString()}</span>
+                          <span>{formatDate(r.createdAt)}</span>
                           <div className="item-actions">
                             <button onClick={() => startEditReport(r)} className="btn-link">Edit</button>
                             <button onClick={() => deleteReport(r.id)} className="btn-link danger">Delete</button>
@@ -262,7 +263,7 @@ export default function Profile() {
                       <h5 className="post-title">{p.title}</h5>
                       <p className="post-content">{p.content}</p>
                       <div className="post-meta">
-                        <span>{new Date(p.createdAt).toLocaleDateString()}</span>
+                        <span>{formatDate(p.createdAt)}</span>
                         <div className="item-actions">
                           <button onClick={() => startEditPost(p)} className="btn-link">Edit</button>
                           <button onClick={() => deletePost(p.id)} className="btn-link danger">Delete</button>
