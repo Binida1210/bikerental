@@ -284,6 +284,42 @@ body {
       padding-bottom: 96px; /* room for the mobile nav */
     }
   }
+
+  /* Toggle (hamburger) button - visible on tablet/mobile */
+  .user-mobile-toggle {
+    display: none;
+  }
+
+  @media (max-width: 1024px) {
+    .user-mobile-toggle {
+      display: inline-flex;
+      position: fixed;
+      top: 12px;
+      left: 12px;
+      width: 44px;
+      height: 44px;
+      z-index: 10002;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      background: #ffffff;
+      border: 1px solid rgba(0,0,0,0.06);
+      box-shadow: 0 6px 18px rgba(16,24,40,0.08);
+      cursor: pointer;
+    }
+  }
+
+  /* overlay that shows behind the mobile nav */
+  .user-mobile-nav-overlay {
+    display: none;
+  }
+  .user-mobile-nav-overlay.open {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.3);
+    z-index: 9997;
+  }
   border-color: var(--ring);
   box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.2);
 }
