@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import API from "../api";
-import { formatDate } from "../shared/formatDate";
+import { formatDateTime, formatRelative } from "../shared/formatDate";
 
 export default function Profile() {
   const [profile, setProfile] = useState(null);
@@ -24,11 +24,17 @@ export default function Profile() {
   }, [profile]);
   async function fetchPosts() {
     const res = await API.get("/posts");
-    setPosts(
-      res.data
-        .filter((p) => p.UserId === profile?.id)
-        .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-    );
+    const posts = res.data || [];
+    const my = posts.filter((p) => p.UserId === profile?.id);
+    my.sort((a, b) => {
+      const aTime = a?.createdAt ? new Date(a.createdAt).getTime() : null;
+      const bTime = b?.createdAt ? new Date(b.createdAt).getTime() : null;
+      if (aTime !== null && bTime !== null) return bTime - aTime;
+      if (aTime !== null) return -1;
+      if (bTime !== null) return 1;
+      return (b?.id || 0) - (a?.id || 0);
+    });
+    setPosts(my);
   }
   async function deleteReport(id) {
     if (!window.confirm("Delete this report?")) return;
@@ -124,7 +130,7 @@ export default function Profile() {
           {reports.map((r) => (
             <li key={r.id}>
               <strong>{r.Station.name}</strong>:{" "}
-                  {editReportId === r.id ? (
+              {editReportId === r.id ? (
                 <>
                   <input
                     value={editReportDesc}
@@ -135,7 +141,14 @@ export default function Profile() {
                 </>
               ) : (
                 <>
-                  {r.description} - Status: {r.status} ({formatDate(r.createdAt)})
+                  {r.description} - Status: {r.status}
+                  {r.createdAt
+                    ? ` (${formatDateTime(r.createdAt)}${
+                        r.updatedAt && r.updatedAt !== r.createdAt
+                          ? ` • Updated: ${formatRelative(r.updatedAt)}`
+                          : ""
+                      })`
+                    : ""}
                   <button onClick={() => startEditReport(r)}>Edit</button>
                   <button onClick={() => deleteReport(r.id)}>Delete</button>
                 </>

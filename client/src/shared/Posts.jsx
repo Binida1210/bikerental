@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Search } from "lucide-react";
 import API from "../api";
+import { formatDateTime, formatRelative } from "./formatDate";
 
 export default function Posts() {
   const [posts, setPosts] = useState([]);
@@ -17,7 +18,18 @@ export default function Posts() {
 
   async function fetchPosts() {
     const res = await API.get("/posts");
-    setPosts(res.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)));
+    // Sort newest-first, but some posts may lack createdAt => fallback to comparator
+    const data = res.data || [];
+    setPosts(
+      data.sort((a, b) => {
+        const aTime = a?.createdAt ? new Date(a.createdAt).getTime() : null;
+        const bTime = b?.createdAt ? new Date(b.createdAt).getTime() : null;
+        if (aTime !== null && bTime !== null) return bTime - aTime;
+        if (aTime !== null) return -1;
+        if (bTime !== null) return 1;
+        return (b?.id || 0) - (a?.id || 0);
+      })
+    );
   }
 
   async function fetchUser() {
@@ -71,7 +83,13 @@ export default function Posts() {
             <div key={p.id} className="card post-item">
               <h4 className="post-title">{p.title}</h4>
               <p className="post-content">{p.content}</p>
-              <div className="post-author">By: {p.User && p.User.username}</div>
+              <div className="post-author">
+                By: {p.User && p.User.username}
+                {p.createdAt ? ` • ${formatDateTime(p.createdAt)}` : ""}
+                {p.updatedAt && p.updatedAt !== p.createdAt
+                  ? ` • Updated: ${formatRelative(p.updatedAt)}`
+                  : ""}
+              </div>
             </div>
           ))}
           {filteredPosts.length === 0 && (

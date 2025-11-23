@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import API from "../api";
-import { formatDate } from "../shared/formatDate";
+import { formatDateTime, formatRelative } from "../shared/formatDate";
 
 export default function AdminDashboard() {
   const [users, setUsers] = useState([]);
@@ -408,7 +408,12 @@ export default function AdminDashboard() {
                     Status: <b>{r.status}</b>
                   </div>
                   <div>Reporter: {r.User ? r.User.username : "Unknown"}</div>
-                  <div>Date: {formatDate(r.createdAt)}</div>
+                  <div>
+                    Date: {formatDateTime(r.createdAt)}
+                    {r.updatedAt && r.updatedAt !== r.createdAt
+                      ? ` • Updated: ${formatRelative(r.updatedAt)}`
+                      : ""}
+                  </div>
                   <div style={{ marginTop: 8 }}>
                     <button
                       onClick={() =>

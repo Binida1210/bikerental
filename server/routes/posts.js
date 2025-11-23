@@ -29,11 +29,10 @@ router.put("/:id", auth, async (req, res) => {
 
   const newTitle = title !== undefined ? title : post.title;
   const newContent = content !== undefined ? content : post.content;
-  await query("UPDATE Posts SET title = ?, content = ? WHERE id = ?", [
-    newTitle,
-    newContent,
-    id,
-  ]);
+  await query(
+    "UPDATE Posts SET title = ?, content = ?, updatedAt = NOW() WHERE id = ?",
+    [newTitle, newContent, id]
+  );
 
   const updatedRows = await query(
     `SELECT p.*, u.id as user_id, u.username as user_username FROM Posts p LEFT JOIN Users u ON p.UserId = u.id WHERE p.id = ?`,
@@ -63,7 +62,10 @@ router.delete("/:id", auth, async (req, res) => {
 router.get("/", async (req, res) => {
   // Some existing DBs may not have createdAt column (older schema). Check first.
   const hasCreated = await query("SHOW COLUMNS FROM Posts LIKE 'createdAt'");
-  const orderClause = hasCreated && hasCreated.length ? "ORDER BY p.createdAt DESC" : "ORDER BY p.id DESC";
+  const orderClause =
+    hasCreated && hasCreated.length
+      ? "ORDER BY p.createdAt DESC"
+      : "ORDER BY p.id DESC";
   const rows = await query(`
     SELECT p.*, u.id as user_id, u.username as user_username
     FROM Posts p

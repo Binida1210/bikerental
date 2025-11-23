@@ -112,7 +112,8 @@ export default function Rentals() {
                 <strong>Started:</strong> {formatDateTime(r.startedAt)}
               </div>
               <div className="rental-detail">
-                <strong>Ended:</strong> {r.endedAt ? formatDateTime(r.endedAt) : "Ongoing"}
+                <strong>Ended:</strong>{" "}
+                {r.endedAt ? formatDateTime(r.endedAt) : "Ongoing"}
               </div>
             </div>
             {r.status === "active" && (
@@ -134,7 +135,8 @@ export default function Rentals() {
           <div className="return-modal">
             <h4>Return Bike</h4>
             <p>
-              Rental #{returning.id} - Started: {formatDateTime(returning.startedAt)}
+              Rental #{returning.id} - Started:{" "}
+              {formatDateTime(returning.startedAt)}
             </p>
             <div className="form-group">
               <label className="form-label">Choose return station:</label>

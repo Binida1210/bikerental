@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import API from "../api";
-import { formatDate, formatDateTime } from "./formatDate";
+import { formatDateTime, formatRelative } from "./formatDate";
 
 export default function Profile() {
   const [profile, setProfile] = useState(null);
@@ -26,7 +26,11 @@ export default function Profile() {
   async function fetchPosts() {
     try {
       const res = await API.get("/posts");
-      setPosts(res.data?.filter((p) => p.UserId === profile?.id).sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)) || []);
+      setPosts(
+        res.data
+          ?.filter((p) => p.UserId === profile?.id)
+          .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)) || []
+      );
     } catch (e) {
       console.error("Error fetching posts:", e);
       setPosts([]);
@@ -166,7 +170,9 @@ export default function Profile() {
               />
             </div>
             <div className="form-group">
-              <label className="form-label">New Password (leave blank to keep current)</label>
+              <label className="form-label">
+                New Password (leave blank to keep current)
+              </label>
               <input
                 type="password"
                 value={password}
@@ -175,7 +181,9 @@ export default function Profile() {
               />
             </div>
             <div className="form-actions">
-              <button type="submit" className="btn">Save Changes</button>
+              <button type="submit" className="btn">
+                Save Changes
+              </button>
             </div>
           </form>
         </div>
@@ -190,7 +198,9 @@ export default function Profile() {
               {reports.map((r) => (
                 <div key={r.id} className="report-item">
                   <div className="report-header">
-                    <span className="report-station">{r.Station?.name || "Unknown Station"}</span>
+                    <span className="report-station">
+                      {r.Station?.name || "Unknown Station"}
+                    </span>
                     <span className={`status-badge status-${r.status}`}>
                       {r.status.charAt(0).toUpperCase() + r.status.slice(1)}
                     </span>
@@ -205,18 +215,43 @@ export default function Profile() {
                           rows={3}
                         />
                         <div className="edit-actions">
-                          <button onClick={() => saveEditReport(r.id)} className="btn small">Save</button>
-                          <button onClick={() => setEditReportId(null)} className="btn secondary small">Cancel</button>
+                          <button
+                            onClick={() => saveEditReport(r.id)}
+                            className="btn small"
+                          >
+                            Save
+                          </button>
+                          <button
+                            onClick={() => setEditReportId(null)}
+                            className="btn secondary small"
+                          >
+                            Cancel
+                          </button>
                         </div>
                       </div>
                     ) : (
                       <>
                         <p>{r.description}</p>
                         <div className="report-meta">
-                          <span>{formatDate(r.createdAt)}</span>
+                          <span>
+                            {formatDateTime(r.createdAt)}
+                            {r.updatedAt && r.updatedAt !== r.createdAt
+                              ? ` • Updated: ${formatRelative(r.updatedAt)}`
+                              : ""}
+                          </span>
                           <div className="item-actions">
-                            <button onClick={() => startEditReport(r)} className="btn-link">Edit</button>
-                            <button onClick={() => deleteReport(r.id)} className="btn-link danger">Delete</button>
+                            <button
+                              onClick={() => startEditReport(r)}
+                              className="btn-link"
+                            >
+                              Edit
+                            </button>
+                            <button
+                              onClick={() => deleteReport(r.id)}
+                              className="btn-link danger"
+                            >
+                              Delete
+                            </button>
                           </div>
                         </div>
                       </>
@@ -254,8 +289,18 @@ export default function Profile() {
                         placeholder="Content"
                       />
                       <div className="edit-actions">
-                        <button onClick={() => saveEditPost(p.id)} className="btn small">Save</button>
-                        <button onClick={() => setEditPostId(null)} className="btn secondary small">Cancel</button>
+                        <button
+                          onClick={() => saveEditPost(p.id)}
+                          className="btn small"
+                        >
+                          Save
+                        </button>
+                        <button
+                          onClick={() => setEditPostId(null)}
+                          className="btn secondary small"
+                        >
+                          Cancel
+                        </button>
                       </div>
                     </div>
                   ) : (
@@ -263,10 +308,28 @@ export default function Profile() {
                       <h5 className="post-title">{p.title}</h5>
                       <p className="post-content">{p.content}</p>
                       <div className="post-meta">
-                        <span>{formatDate(p.createdAt)}</span>
+                        <span>
+                          By: {p.User?.username || profile.username}{" "}
+                          {p.createdAt
+                            ? ` • ${formatDateTime(p.createdAt)}`
+                            : ""}
+                          {p.updatedAt && p.updatedAt !== p.createdAt
+                            ? ` • Updated: ${formatRelative(p.updatedAt)}`
+                            : ""}
+                        </span>
                         <div className="item-actions">
-                          <button onClick={() => startEditPost(p)} className="btn-link">Edit</button>
-                          <button onClick={() => deletePost(p.id)} className="btn-link danger">Delete</button>
+                          <button
+                            onClick={() => startEditPost(p)}
+                            className="btn-link"
+                          >
+                            Edit
+                          </button>
+                          <button
+                            onClick={() => deletePost(p.id)}
+                            className="btn-link danger"
+                          >
+                            Delete
+                          </button>
                         </div>
                       </div>
                     </>

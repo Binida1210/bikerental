@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import API from "../api";
+import { formatDateTime, formatRelative } from "../shared/formatDate";
 
 export default function Posts() {
   const [posts, setPosts] = useState([]);
@@ -48,7 +49,13 @@ export default function Posts() {
         <div key={p.id} className="card">
           <strong>{p.title}</strong>
           <div>{p.content}</div>
-          <div>By: {p.User && p.User.username}</div>
+          <div>
+            By: {p.User && p.User.username}
+            {p.createdAt ? ` • ${formatDateTime(p.createdAt)}` : ""}
+            {p.updatedAt && p.updatedAt !== p.createdAt
+              ? ` • Updated: ${formatRelative(p.updatedAt)}`
+              : ""}
+          </div>
         </div>
       ))}
     </div>

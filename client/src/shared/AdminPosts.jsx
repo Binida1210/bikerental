@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { MessageSquare, Users, TrendingUp, Trash2 } from "lucide-react";
 import API from "../api";
-import { formatDate, isRecent } from "./formatDate";
+import { formatDateTime, isRecent, formatRelative } from "./formatDate";
 
 export default function AdminPosts() {
   const [posts, setPosts] = useState([]);
@@ -108,9 +108,7 @@ export default function AdminPosts() {
           <div className="admin-stat-info">
             <div className="admin-stat-label">Recent Posts</div>
             <div className="admin-stat-value">
-              {
-                posts.filter((p) => isRecent(p.createdAt, 7)).length
-              }
+              {posts.filter((p) => isRecent(p.createdAt, 7)).length}
             </div>
           </div>
         </div>
@@ -145,12 +143,9 @@ export default function AdminPosts() {
                   </div>
                   <div className="admin-info-label" style={{ marginTop: 12 }}>
                     By: {getUserName(p.UserId)} | Created:{" "}
-                    {formatDate(p.createdAt)}
-                    {p.updatedAt !== p.createdAt && (
-                      <span>
-                        {" "}
-                        | Updated: {formatDate(p.updatedAt)}
-                      </span>
+                    {formatDateTime(p.createdAt)}
+                    {p.updatedAt && p.updatedAt !== p.createdAt && (
+                      <span> | Updated: {formatRelative(p.updatedAt)}</span>
                     )}
                   </div>
                 </div>

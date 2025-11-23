@@ -208,7 +208,10 @@ router.post("/stations/:id/capacity", adminOnly, async (req, res) => {
 router.get("/posts", adminOnly, async (req, res) => {
   // Check whether createdAt column exists in Posts table; fallback to id when not present
   const hasCreated = await query("SHOW COLUMNS FROM Posts LIKE 'createdAt'");
-  const orderClause = hasCreated && hasCreated.length ? "ORDER BY p.createdAt DESC" : "ORDER BY p.id DESC";
+  const orderClause =
+    hasCreated && hasCreated.length
+      ? "ORDER BY p.createdAt DESC"
+      : "ORDER BY p.id DESC";
   const rows = await query(
     `SELECT p.*, u.id as user_id, u.username as user_username
      FROM Posts p
