@@ -564,7 +564,7 @@ body {
   }
 
   .map-wrapper {
-    min-height: 300px; /* smaller map height for phones */
+    height: 220px; /* smaller map height for phones */
   }
 
   /* Simplify hero card on mobile: hide heading and subtitle, keep search/filter only */
@@ -1360,7 +1360,7 @@ body {
 /* Map styles */
 .map-wrapper {
   height: 100%;
-  min-height: 400px;
+  height: 220px;
 }
 
 .map-wrapper .leaflet-container {
