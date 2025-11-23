@@ -33,6 +33,7 @@ const navLinks = [
 ];
 
 export default function UserIndex({ token, setToken, username, onLogout }) {
+  const [sidebarOpen, setSidebarOpen] = React.useState(false);
   const handleLogin = (newToken) => {
     setToken(newToken);
   };
@@ -52,7 +53,7 @@ export default function UserIndex({ token, setToken, username, onLogout }) {
   return (
     <Router>
       <div className="user-layout">
-        <aside className="user-sidebar">
+        <aside className={`user-sidebar ${sidebarOpen ? "open" : ""}`}>
           <div className="user-sidebar__header">
             <div className="user-sidebar__logo">
               <div>
@@ -73,6 +74,7 @@ export default function UserIndex({ token, setToken, username, onLogout }) {
                     isActive ? " user-sidebar-link--active" : ""
                   }`
                 }
+                onClick={() => setSidebarOpen(false)}
               >
                 <span className="user-sidebar-link-icon">{link.icon}</span>
                 <span>{link.label}</span>
@@ -91,6 +93,15 @@ export default function UserIndex({ token, setToken, username, onLogout }) {
           </button>
         </aside>
         <div className="user-main">
+          <div className="user-mobile-header" style={{ display: "none" }}>
+            <button
+              onClick={() => setSidebarOpen(!sidebarOpen)}
+              className="admin-btn admin-btn-ghost"
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 12h18M3 6h18M3 18h18"></path></svg>
+            </button>
+            <div className="app-title">BikeShare</div>
+          </div>
           <main className="user-main__content container">
             <Routes>
               <Route path="/" element={<Navigate to="/home" replace />} />
@@ -112,6 +123,13 @@ export default function UserIndex({ token, setToken, username, onLogout }) {
             </Routes>
           </main>
         </div>
+        {sidebarOpen && (
+          <div
+            className="user-sidebar-overlay"
+            onClick={() => setSidebarOpen(false)}
+            style={{ display: "none" }}
+          />
+        )}
       </div>
     </Router>
   );

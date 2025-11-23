@@ -215,6 +215,24 @@ body {
   flex-direction: column;
 }
 
+.user-mobile-header {
+  display: none; /* shown only on small screens */
+  padding: 1rem;
+  background: white;
+  border-bottom: 1px solid var(--border);
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.user-sidebar-overlay {
+  display: none; /* shown only on mobile when active */
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  z-index: 80;
+}
+
 .user-main__content {
   flex: 1;
   padding: 2rem 0;
@@ -354,6 +372,7 @@ body {
 
 .card-header {
   margin-bottom: 1rem;
+    z-index: 90;
 }
 
 .card-title {
@@ -449,6 +468,14 @@ body {
 
   .user-main {
     margin-left: 0;
+  }
+
+  .user-mobile-header {
+    display: flex !important;
+  }
+
+  .user-sidebar-overlay {
+    display: block !important;
   }
 
   .nav {
