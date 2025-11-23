@@ -1,36 +1,51 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
+import {
+  LayoutDashboard,
+  MessageSquare,
+  FileText,
+  Bike,
+  User,
+  LogOut,
+} from "lucide-react";
 
-// Mobile bottom nav specifically for small screens. Keeps styling separate
-// from the main sidebar to avoid CSS conflicts.
-export default function MobileNav({ links = [], open = false, onClose } ) {
+const mobileLinks = [
+  { label: "Home", path: "/home", icon: <LayoutDashboard size={18} /> },
+  { label: "Posts", path: "/posts", icon: <MessageSquare size={18} /> },
+  { label: "Report", path: "/report", icon: <FileText size={18} /> },
+  { label: "Rentals", path: "/rentals", icon: <Bike size={18} /> },
+  { label: "Profile", path: "/profile", icon: <User size={18} /> },
+];
+
+export default function MobileNav({ onLogout }) {
   return (
-    <>
-      {/* overlay: closes nav when clicked */}
-      <div
-        className={`user-mobile-nav-overlay ${open ? "open" : ""}`}
-        onClick={() => onClose && onClose()}
-      />
-
-      <nav
-        className={`user-mobile-nav ${open ? "open" : ""}`}
-        role="navigation"
-        aria-label="Mobile nav"
-      >
-        {links.map((l) => (
+    <nav className="mobile-nav" aria-label="Mobile navigation">
+      <div className="mobile-nav-inner">
+        {mobileLinks.map((l) => (
           <NavLink
             key={l.path}
             to={l.path}
             className={({ isActive }) =>
-              `user-mobile-nav-item ${isActive ? "active" : ""}`
+              `mobile-nav__item ${isActive ? "mobile-nav__item--active" : ""}`
             }
-            onClick={() => onClose && onClose()}
           >
-            <div className="user-mobile-nav-icon">{l.icon}</div>
-            <div className="user-mobile-nav-label">{l.label}</div>
+            <div className="mobile-nav__icon">{l.icon}</div>
+            <div className="mobile-nav__label">{l.label}</div>
           </NavLink>
         ))}
-      </nav>
-    </>
+
+        {/* logout as separate item */}
+        <button
+          className="mobile-nav__item mobile-nav__logout"
+          onClick={onLogout}
+          title="Logout"
+        >
+          <div className="mobile-nav__icon">
+            <LogOut size={18} />
+          </div>
+          <div className="mobile-nav__label">Logout</div>
+        </button>
+      </div>
+    </nav>
   );
 }

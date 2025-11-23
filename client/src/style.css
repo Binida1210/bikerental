@@ -257,10 +257,6 @@ body {
   padding: 0.75rem;
   border: 1px solid var(--border);
   border-radius: var(--radius);
-/* Mobile bottom navbar for user app (separate from sidebar) */
-  .user-mobile-nav {
-    display: none; /* default hidden, shown only at small breakpoints */
-  }
   background-color: var(--input);
   color: var(--foreground);
   font-size: 0.875rem;
@@ -270,56 +266,6 @@ body {
 
 .form-textarea:focus {
   outline: none;
-  @media (max-width: 1024px) {
-    .user-mobile-nav {
-      display: flex;
-    }
-
-    /* hide the large sidebar in this breakpoint range */
-    .user-sidebar {
-      display: none !important;
-    }
-
-    .user-main__content {
-      padding-bottom: 96px; /* room for the mobile nav */
-    }
-  }
-
-  /* Toggle (hamburger) button - visible on tablet/mobile */
-  .user-mobile-toggle {
-    display: none;
-  }
-
-  @media (max-width: 1024px) {
-    .user-mobile-toggle {
-      display: inline-flex;
-      position: fixed;
-      top: 12px;
-      left: 12px;
-      width: 44px;
-      height: 44px;
-      z-index: 10002;
-      align-items: center;
-      justify-content: center;
-      border-radius: 8px;
-      background: #ffffff;
-      border: 1px solid rgba(0,0,0,0.06);
-      box-shadow: 0 6px 18px rgba(16,24,40,0.08);
-      cursor: pointer;
-    }
-  }
-
-  /* overlay that shows behind the mobile nav */
-  .user-mobile-nav-overlay {
-    display: none;
-  }
-  .user-mobile-nav-overlay.open {
-    display: block;
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.3);
-    z-index: 9997;
-  }
   border-color: var(--ring);
   box-shadow: 0 0 0 2px rgba(34, 197, 94, 0.2);
 }
@@ -521,57 +467,92 @@ body {
   }
 }
 
-/* Stations specific styles */
-.user-home {
+/* Mobile-specific bottom nav for users (no conflicts with existing rules)
+   - Uses prefix mobile-* and only shows on screens <= 765px
+*/
+.mobile-nav {
+  display: none; /* hidden by default */
+}
 
-  /* Mobile bottom navbar for user app (separate from sidebar) */
-  .user-mobile-nav {
-    display: flex;
-    position: fixed;
-    bottom: 12px;
-    left: 12px;
-    right: 12px;
-    height: 62px;
-    border-radius: 12px;
-    background: #ffffff;
-    box-shadow: 0 6px 18px rgba(16, 24, 40, 0.12);
-    align-items: center;
-    justify-content: space-around;
-    z-index: 9999;
-    border: 1px solid rgba(0,0,0,0.04);
-  }
-
-  .user-mobile-nav-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 4px;
-    padding: 6px 8px;
-    color: var(--muted-foreground);
-    text-decoration: none;
-    font-size: 12px;
-  }
-
-  .user-mobile-nav-item .user-mobile-nav-icon svg { /* icons are lucide or inline */
-    width: 18px;
-    height: 18px;
-    color: var(--muted-foreground);
-  }
-
-  .user-mobile-nav-item.active {
-    color: var(--foreground);
-  }
-
-  /* hide the large sidebar on smaller screens (use our mobile nav instead) */
+@media (max-width: 765px) {
+  /* Make sure the main sidebar is hidden on small screens (existing behaviour) */
   .user-sidebar {
     display: none !important;
   }
-
-  /* give main content some safe spacing so navbar doesn't overlay content */
-  .user-main__content {
-    padding-bottom: 96px; /* room for the mobile nav */
+  .user-main {
+    margin-left: 0 !important;
   }
+
+  .mobile-nav {
+    display: block;
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1000;
+    background: #ffffff;
+    border-top: 1px solid var(--border);
+    box-shadow: 0 -6px 20px rgba(15, 23, 42, 0.06);
+  }
+
+  .mobile-nav-inner {
+    display: flex;
+    max-width: 1200px;
+    margin: 0 auto;
+    justify-content: space-around;
+    align-items: center;
+    padding: 0.5rem 0.5rem;
+  }
+
+  .mobile-nav__item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+    color: var(--muted-foreground);
+    text-decoration: none;
+    background: transparent;
+    border-radius: 8px;
+    padding: 0.25rem 0.5rem;
+    min-width: 56px;
+    justify-content: center;
+    font-size: 0.75rem;
+  }
+
+  .mobile-nav__item--active,
+  .mobile-nav__item:active {
+    background: rgba(34, 197, 94, 0.06);
+    color: var(--primary);
+  }
+
+  .mobile-nav__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: inherit;
+  }
+
+  .mobile-nav__label {
+    font-size: 11px;
+    color: inherit;
+    white-space: nowrap;
+  }
+
+  .mobile-nav__logout {
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    color: var(--muted-foreground);
+  }
+
+  /* ensure main content doesn't sit under the nav */
+  .user-main__content {
+    padding-bottom: 4.5rem; /* enough space for bottom nav */
+  }
+}
+
+/* Stations specific styles */
+.user-home {
   padding: 2.5rem;
 }
 
