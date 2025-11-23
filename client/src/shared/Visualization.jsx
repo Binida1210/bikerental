@@ -45,7 +45,10 @@ export default function Visualization() {
       renderStationsBar(stationsRef.current, data.stationsBikeCounts || []);
     }
     if (activeTab === "reports") {
-      renderReportsDonut(reportsRef.current, data.reports || { counts: [], total: 0 });
+      renderReportsDonut(
+        reportsRef.current,
+        data.reports || { counts: [], total: 0 }
+      );
     }
   }, [data, activeTab]);
 
@@ -58,45 +61,76 @@ export default function Visualization() {
       </div>
 
       <div className="card visualization-card">
-      <div className="chart-tabs">
-        <div className="tab-list">
-          <button
-            className={`admin-btn ${activeTab === "age" ? "admin-btn-secondary" : "admin-btn-ghost"}`}
-            onClick={() => setActiveTab("age")}
-          >
-            Age buckets
-          </button>
-          <button
-            className={`admin-btn ${activeTab === "stations" ? "admin-btn-secondary" : "admin-btn-ghost"}`}
-            onClick={() => setActiveTab("stations")}
-          >
-            Stations
-          </button>
-          <button
-            className={`admin-btn ${activeTab === "reports" ? "admin-btn-secondary" : "admin-btn-ghost"}`}
-            onClick={() => setActiveTab("reports")}
-          >
-            Reports
-          </button>
+        <div className="chart-tabs">
+          <div className="tab-list">
+            <button
+              className={`admin-btn ${
+                activeTab === "age" ? "admin-btn-secondary" : "admin-btn-ghost"
+              }`}
+              onClick={() => setActiveTab("age")}
+            >
+              Age buckets
+            </button>
+            <button
+              className={`admin-btn ${
+                activeTab === "stations"
+                  ? "admin-btn-secondary"
+                  : "admin-btn-ghost"
+              }`}
+              onClick={() => setActiveTab("stations")}
+            >
+              Stations
+            </button>
+            <button
+              className={`admin-btn ${
+                activeTab === "reports"
+                  ? "admin-btn-secondary"
+                  : "admin-btn-ghost"
+              }`}
+              onClick={() => setActiveTab("reports")}
+            >
+              Reports
+            </button>
+          </div>
+
+          <div className="chart-conatanier" style={{ marginTop: 60 }}>
+            <div
+              className="chart-item"
+              style={{ display: activeTab === "age" ? "block" : "none" }}
+            >
+              <h4>Users: Age buckets</h4>
+              <div
+                ref={ageRef}
+                className="viz-chart"
+                style={{ marginTop: 60 }}
+              />
+            </div>
+
+            <div
+              className="chart-item"
+              style={{ display: activeTab === "stations" ? "block" : "none" }}
+            >
+              <h4>Stations: Available / Capacity</h4>
+              <div
+                ref={stationsRef}
+                className="viz-chart"
+                style={{ marginTop: 60 }}
+              />
+            </div>
+
+            <div
+              className="chart-item"
+              style={{ display: activeTab === "reports" ? "block" : "none" }}
+            >
+              <h4>Reports: Resolved vs Processing</h4>
+              <div
+                ref={reportsRef}
+                className="viz-chart"
+                style={{ marginTop: 60 }}
+              />
+            </div>
+          </div>
         </div>
-
-        <div className="chart-grid">
-          <div className="chart-item" style={{ display: activeTab === "age" ? "block" : "none" }}>
-            <h4>Users: Age buckets</h4>
-            <div ref={ageRef} className="viz-chart" />
-          </div>
-
-          <div className="chart-item" style={{ display: activeTab === "stations" ? "block" : "none" }}>
-            <h4>Stations: Available / Capacity</h4>
-            <div ref={stationsRef} className="viz-chart" />
-          </div>
-
-          <div className="chart-item" style={{ display: activeTab === "reports" ? "block" : "none" }}>
-            <h4>Reports: Resolved vs Processing</h4>
-            <div ref={reportsRef} className="viz-chart" />
-          </div>
-        </div>
-      </div>
       </div>
     </div>
   );
@@ -105,7 +139,10 @@ export default function Visualization() {
 function renderAgeHistogram(container, data) {
   clearNode(container);
   const margin = { top: 20, right: 12, bottom: 30, left: 36 };
-  const width = Math.max(360, (container?.clientWidth || 800) - margin.left - margin.right);
+  const width = Math.max(
+    360,
+    (container?.clientWidth || 800) - margin.left - margin.right
+  );
   const height = 220 - margin.top - margin.bottom;
 
   const svg = d3
@@ -126,8 +163,16 @@ function renderAgeHistogram(container, data) {
     return aStart - bStart;
   });
 
-  const x = d3.scaleBand().domain(sorted.map((d) => d.bucket)).range([0, width]).padding(0.2);
-  const y = d3.scaleLinear().domain([0, d3.max(sorted, (d) => d.count) || 1]).nice().range([height, 0]);
+  const x = d3
+    .scaleBand()
+    .domain(sorted.map((d) => d.bucket))
+    .range([0, width])
+    .padding(0.2);
+  const y = d3
+    .scaleLinear()
+    .domain([0, d3.max(sorted, (d) => d.count) || 1])
+    .nice()
+    .range([height, 0]);
 
   svg
     .append("g")
@@ -153,7 +198,10 @@ function renderAgeHistogram(container, data) {
 function renderStationsBar(container, data) {
   clearNode(container);
   const margin = { top: 10, right: 10, bottom: 80, left: 50 };
-  const width = Math.max(360, (container?.clientWidth || 800) - margin.left - margin.right);
+  const width = Math.max(
+    360,
+    (container?.clientWidth || 800) - margin.left - margin.right
+  );
   const height = 260 - margin.top - margin.bottom;
 
   const svg = d3
@@ -207,8 +255,11 @@ function renderStationsBar(container, data) {
 
 function renderReportsDonut(container, reports) {
   clearNode(container);
-  const counts = (reports.counts || []).map((r) => ({ status: r.status, count: r.count }));
-  const width = Math.max(280, (container?.clientWidth || 400));
+  const counts = (reports.counts || []).map((r) => ({
+    status: r.status,
+    count: r.count,
+  }));
+  const width = Math.max(280, container?.clientWidth || 400);
   const height = 220;
   const radius = Math.min(width, height) / 2 - 10;
 
@@ -225,7 +276,10 @@ function renderReportsDonut(container, reports) {
   const pie = d3.pie().value((d) => d.count);
   const data_ready = pie(counts);
 
-  const arc = d3.arc().innerRadius(radius * 0.55).outerRadius(radius);
+  const arc = d3
+    .arc()
+    .innerRadius(radius * 0.55)
+    .outerRadius(radius);
 
   svg
     .selectAll("path")
@@ -237,14 +291,23 @@ function renderReportsDonut(container, reports) {
     .style("stroke-width", "1px");
 
   // legend
-  const legend = svg.append("g").attr("transform", `translate(${-(width/2)+10},${-(height/2)+10})`);
+  const legend = svg
+    .append("g")
+    .attr("transform", `translate(${-(width / 2) + 10},${-(height / 2) + 10})`);
   legend
     .selectAll("g")
     .data(counts)
     .join("g")
     .attr("transform", (d, i) => `translate(0, ${i * 18})`)
     .call((g) => {
-      g.append("rect").attr("width", 12).attr("height", 12).attr("fill", (d, i) => color(i));
-      g.append("text").attr("x", 16).attr("y", 11).text((d) => `${d.status} (${d.count})`).style("font-size", "12px");
+      g.append("rect")
+        .attr("width", 12)
+        .attr("height", 12)
+        .attr("fill", (d, i) => color(i));
+      g.append("text")
+        .attr("x", 16)
+        .attr("y", 11)
+        .text((d) => `${d.status} (${d.count})`)
+        .style("font-size", "12px");
     });
 }

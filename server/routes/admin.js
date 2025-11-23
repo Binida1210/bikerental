@@ -273,7 +273,8 @@ router.get("/visualization", adminOnly, async (req, res) => {
       .filter((r) => (r.status || "").toLowerCase() === "resolved")
       .reduce((s, r) => s + r.count, 0);
     const processingCount = totalReports - resolvedCount;
-    const resolvedPercent = totalReports === 0 ? 0 : Math.round((resolvedCount / totalReports) * 100);
+    const resolvedPercent =
+      totalReports === 0 ? 0 : Math.round((resolvedCount / totalReports) * 100);
     const processingPercent = totalReports === 0 ? 0 : 100 - resolvedPercent;
 
     res.json({

@@ -123,7 +123,16 @@ body {
   max-width: 1200px;
 }
 
-/* Typography: page titles are styled below near the page-header block to avoid duplicate/conflicting rules */
+/* Typography */
+.admin-page-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--gray-800);
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
 
 .admin-section-title {
   font-size: 1.25rem;
@@ -701,6 +710,8 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+
 .admin-page-title {
   display: flex;
   align-items: center;
@@ -708,15 +719,8 @@ body {
   font-size: 2rem;
   font-weight: 700;
   color: var(--gray-800);
-  /* default spacing for page titles when not inside .admin-page-header */
-  margin-bottom: 1.25rem;
-}
-
-/* when page title is inside the decorative header, let header control spacing */
-.admin-page-header > .admin-page-title,
-.admin-page-header .admin-page-title {
   margin: 0;
-  padding-bottom: 0.5rem; /* give a small inner space with header border */
+  padding-bottom: 1rem;
 }
 
 .admin-card-title {

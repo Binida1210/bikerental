@@ -41,20 +41,29 @@ Example response:
 
 ```json
 {
-	"usersAgeBuckets": [ { "bucket": "0-9", "count": 2 }, { "bucket": "10-19", "count": 5 } ],
-	"stationsBikeCounts": [ { "id": 1, "name": "Station A", "available": 8, "capacity": 20 } ],
-	"reports": {
-		"counts": [ { "status": "open", "count": 4 }, { "status": "resolved", "count": 1 } ],
-		"total": 5,
-		"resolvedCount": 1,
-		"processingCount": 4,
-		"resolvedPercent": 20,
-		"processingPercent": 80
-	}
+  "usersAgeBuckets": [
+    { "bucket": "0-9", "count": 2 },
+    { "bucket": "10-19", "count": 5 }
+  ],
+  "stationsBikeCounts": [
+    { "id": 1, "name": "Station A", "available": 8, "capacity": 20 }
+  ],
+  "reports": {
+    "counts": [
+      { "status": "open", "count": 4 },
+      { "status": "resolved", "count": 1 }
+    ],
+    "total": 5,
+    "resolvedCount": 1,
+    "processingCount": 4,
+    "resolvedPercent": 20,
+    "processingPercent": 80
+  }
 }
 ```
 
 Notes:
+
 - This endpoint is protected by the admin token middleware (send Authorization: Bearer <token>).
 - Use these aggregates in admin visualization pages (e.g., D3.js charts). Adjust grouping or filters on the client if you need different buckets.
 - OpenAPI spec: `server/swagger.yaml` (you can open it in https://editor.swagger.io/)
