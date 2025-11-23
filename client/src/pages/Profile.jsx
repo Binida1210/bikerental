@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import API from "../api";
+import { User, Lock, Mail, Phone, Calendar } from "lucide-react";
 import { formatDateTime, formatRelative } from "../shared/formatDate";
 
 export default function Profile() {
@@ -156,10 +157,12 @@ export default function Profile() {
     <div className="card">
       <h3>Profile</h3>
       <form onSubmit={save}>
-        <div>
+        <div className="input-with-icon">
+          <User size={16} />
           <input value={username} disabled />
         </div>
-        <div>
+        <div className="input-with-icon">
+          <Lock size={16} />
           <input
             placeholder="new password (leave blank to keep)"
             type="password"
@@ -167,7 +170,8 @@ export default function Profile() {
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
-        <div>
+        <div className="input-with-icon">
+          <Mail size={16} />
           <input
             placeholder="email"
             type="email"
@@ -175,7 +179,8 @@ export default function Profile() {
             onChange={(e) => setEmail(e.target.value)}
           />
         </div>
-        <div>
+        <div className="input-with-icon">
+          <Phone size={16} />
           <input
             placeholder="phone"
             type="tel"
@@ -183,7 +188,8 @@ export default function Profile() {
             onChange={(e) => setPhone(e.target.value)}
           />
         </div>
-        <div>
+        <div className="input-with-icon">
+          <Calendar size={16} />
           <input
             placeholder="age"
             type="number"

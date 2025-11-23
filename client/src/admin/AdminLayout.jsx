@@ -66,7 +66,7 @@ export default function AdminLayout({ username, onLogout }) {
         <div className="admin-sidebar-header">
           <div className="admin-logo">
             <MapPin size={24} />
-            BikeRental Admin
+            BikeShare Admin
           </div>
           {username && (
             <div
@@ -127,7 +127,7 @@ export default function AdminLayout({ username, onLogout }) {
           >
             <Menu size={20} />
           </button>
-          <div className="admin-logo">BikeRental Admin</div>
+          <div className="admin-logo">BikeShare Admin</div>
         </div>
 
         <div className="admin-content">

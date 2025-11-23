@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import API from "../api";
+import { Mail, Phone, Calendar, User, Lock } from "lucide-react";
 import { formatDateTime, formatRelative } from "./formatDate";
 
 export default function Profile() {
@@ -204,52 +205,67 @@ export default function Profile() {
           <form onSubmit={save} className="profile-form">
             <div className="form-group">
               <label className="form-label">Username</label>
-              <input
-                type="text"
-                value={username}
-                className="form-input"
-                required
-                disabled
-              />
+              <div className="input-with-icon">
+                <User size={16} />
+                <input
+                  type="text"
+                  value={username}
+                  className="form-input"
+                  required
+                  disabled
+                />
+              </div>
             </div>
             <div className="form-group">
               <label className="form-label">
                 New Password (leave blank to keep current)
               </label>
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="form-input"
-              />
+              <div className="input-with-icon">
+                <Lock size={16} />
+                <input
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="form-input"
+                />
+              </div>
             </div>
             <div className="form-group">
               <label className="form-label">Email</label>
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="form-input"
-              />
+              <div className="input-with-icon">
+                <Mail size={16} />
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="form-input"
+                />
+              </div>
             </div>
             <div className="form-group">
               <label className="form-label">Phone</label>
-              <input
-                type="tel"
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-                className="form-input"
-              />
+              <div className="input-with-icon">
+                <Phone size={16} />
+                <input
+                  type="tel"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                  className="form-input"
+                />
+              </div>
             </div>
             <div className="form-group">
               <label className="form-label">Age</label>
-              <input
-                type="number"
-                value={age}
-                onChange={(e) => setAge(e.target.value)}
-                className="form-input"
-                min="0"
-              />
+              <div className="input-with-icon">
+                <Calendar size={16} />
+                <input
+                  type="number"
+                  value={age}
+                  onChange={(e) => setAge(e.target.value)}
+                  className="form-input"
+                  min="0"
+                />
+              </div>
             </div>
             <div className="form-actions">
               <button type="submit" className="btn">

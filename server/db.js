@@ -9,7 +9,7 @@ function makePoolConfig() {
     port: Number(process.env.DB_PORT || 3306),
     user: process.env.DB_USER || "root",
     password: process.env.DB_PASS || "",
-    database: process.env.DB_NAME || "bikerental",
+    database: process.env.DB_NAME || "bikeshare",
     waitForConnections: true,
     connectionLimit: Number(process.env.DB_CONN_LIMIT || 10),
   };
@@ -124,7 +124,9 @@ async function init() {
   try {
     const haveEmail = await query("SHOW COLUMNS FROM Users LIKE 'email'");
     if (!haveEmail || haveEmail.length === 0) {
-      await query("ALTER TABLE Users ADD COLUMN email VARCHAR(255) DEFAULT NULL");
+      await query(
+        "ALTER TABLE Users ADD COLUMN email VARCHAR(255) DEFAULT NULL"
+      );
     }
   } catch (e) {
     console.warn("Could not ensure Users.email column:", e.message || e);
@@ -132,7 +134,9 @@ async function init() {
   try {
     const havePhone = await query("SHOW COLUMNS FROM Users LIKE 'phone'");
     if (!havePhone || havePhone.length === 0) {
-      await query("ALTER TABLE Users ADD COLUMN phone VARCHAR(50) DEFAULT NULL");
+      await query(
+        "ALTER TABLE Users ADD COLUMN phone VARCHAR(50) DEFAULT NULL"
+      );
     }
   } catch (e) {
     console.warn("Could not ensure Users.phone column:", e.message || e);

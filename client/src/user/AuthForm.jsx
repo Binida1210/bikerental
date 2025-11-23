@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { MapPin, Lock, User } from "lucide-react";
+import { MapPin, Lock, User, Mail, Phone, Calendar } from "lucide-react";
 import API, { setToken } from "../api";
 
 export default function AuthForm({ onLogin }) {
@@ -98,6 +98,7 @@ export default function AuthForm({ onLogin }) {
               <div className="user-input-group">
                 <label htmlFor="email">Email</label>
                 <div className="user-input-with-icon">
+                  <Mail size={20} className="user-input-icon" />
                   <input
                     id="email"
                     type="email"
@@ -112,6 +113,7 @@ export default function AuthForm({ onLogin }) {
               <div className="user-input-group">
                 <label htmlFor="phone">Phone</label>
                 <div className="user-input-with-icon">
+                  <Phone size={20} className="user-input-icon" />
                   <input
                     id="phone"
                     type="tel"
@@ -126,6 +128,7 @@ export default function AuthForm({ onLogin }) {
               <div className="user-input-group">
                 <label htmlFor="age">Age</label>
                 <div className="user-input-with-icon">
+                  <Calendar size={20} className="user-input-icon" />
                   <input
                     id="age"
                     type="number"

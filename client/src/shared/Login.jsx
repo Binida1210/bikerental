@@ -41,7 +41,7 @@ export default function Login({ onLogin }) {
         <div className="admin-login-header">
           <div className="admin-login-logo">
             <MapPin size={32} />
-            <h1>BikeRental Admin</h1>
+            <h1>BikeShare Admin</h1>
           </div>
           <p className="admin-login-subtitle">Sign in to your admin account</p>
         </div>
@@ -90,7 +90,7 @@ export default function Login({ onLogin }) {
 
         {/* Footer */}
         <div className="admin-login-footer">
-          <p>BikeRental Management System</p>
+          <p>BikeShare Management System</p>
         </div>
       </div>
     </div>

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { User, Lock, Mail, Phone, Calendar } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import API, { setToken } from "../api";
 
@@ -31,14 +32,16 @@ export default function Register({ onRegister }) {
     <div className="card">
       <h3>Register</h3>
       <form onSubmit={register}>
-        <div>
+        <div className="input-with-icon">
+          <User size={16} />
           <input
             placeholder="username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
           />
         </div>
-        <div>
+        <div className="input-with-icon">
+          <Lock size={16} />
           <input
             placeholder="password"
             type="password"
@@ -46,21 +49,24 @@ export default function Register({ onRegister }) {
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
-        <div>
+        <div className="input-with-icon">
+          <Mail size={16} />
           <input
             placeholder="email (optional)"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
         </div>
-        <div>
+        <div className="input-with-icon">
+          <Phone size={16} />
           <input
             placeholder="phone (optional)"
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
           />
         </div>
-        <div>
+        <div className="input-with-icon">
+          <Calendar size={16} />
           <input
             placeholder="age (optional)"
             type="number"

@@ -15,7 +15,7 @@ export default function AdminApp({ token, setToken, username, setUsername }) {
   return (
     <Router>
       <header className="app-header">
-        <div className="app-title">따릉이 - BikeShare (Admin)</div>
+        <div className="app-title">BikeShare</div>
         <nav className="nav container">
           <Link to="/admin" className="btn">
             Dashboard
