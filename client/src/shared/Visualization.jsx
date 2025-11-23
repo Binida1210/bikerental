@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import API from "../api";
 import * as d3 from "d3";
+import { TrendingUp } from "lucide-react";
 
 function clearNode(node) {
   if (!node) return;
@@ -48,44 +49,64 @@ export default function Visualization() {
     }
   }, [data, activeTab]);
 
-  return (
-    <div className="card">
-      <h3>Admin Visualization</h3>
-      <div className="chart-tabs">
-        <div className="tab-list">
-          <button
-            className={`btn ${activeTab === "age" ? "secondary" : "ghost"}`}
-            onClick={() => setActiveTab("age")}
-          >
-            Age buckets
-          </button>
-          <button
-            className={`btn ${activeTab === "stations" ? "secondary" : "ghost"}`}
-            onClick={() => setActiveTab("stations")}
-          >
-            Stations
-          </button>
-          <button
-            className={`btn ${activeTab === "reports" ? "secondary" : "ghost"}`}
-            onClick={() => setActiveTab("reports")}
-          >
-            Reports
-          </button>
-        </div>
+  const activeTitles = {
+    age: "Users: Age buckets",
+    stations: "Stations: Available / Capacity",
+    reports: "Reports: Resolved vs Processing",
+  };
 
+  return (
+    <div>
+      <div className="admin-page-header">
+        <h1 className="admin-page-title">
+          <TrendingUp size={28} />
+          Admin Visualization
+        </h1>
+      </div>
+
+      <div className="admin-card">
+      <div className="admin-card-header">
+        <h3 className="admin-card-title">
+          <TrendingUp size={20} /> {activeTitles[activeTab]}
+        </h3>
+        <div className="chart-tabs" style={{ alignSelf: "flex-start" }}>
+          <div className="tab-list">
+            <button
+              className={`admin-btn ${activeTab === "age" ? "admin-btn-secondary" : "admin-btn-ghost"}`}
+              onClick={() => setActiveTab("age")}
+            >
+              Age buckets
+            </button>
+            <button
+              className={`admin-btn ${activeTab === "stations" ? "admin-btn-secondary" : "admin-btn-ghost"}`}
+              onClick={() => setActiveTab("stations")}
+            >
+              Stations
+            </button>
+            <button
+              className={`admin-btn ${activeTab === "reports" ? "admin-btn-secondary" : "admin-btn-ghost"}`}
+              onClick={() => setActiveTab("reports")}
+            >
+              Reports
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div style={{ padding: "0 1.5rem 1.5rem" }}>
         <div className="chart-grid">
           <div className="chart-item" style={{ display: activeTab === "age" ? "block" : "none" }}>
-            <h4>Users: Age buckets</h4>
+            {/* title is shown in the card header */}
             <div ref={ageRef} className="viz-chart" />
           </div>
 
           <div className="chart-item" style={{ display: activeTab === "stations" ? "block" : "none" }}>
-            <h4>Stations: Available / Capacity</h4>
+            {/* title is shown in the card header */}
             <div ref={stationsRef} className="viz-chart" />
           </div>
 
           <div className="chart-item" style={{ display: activeTab === "reports" ? "block" : "none" }}>
-            <h4>Reports: Resolved vs Processing</h4>
+            {/* title is shown in the card header */}
             <div ref={reportsRef} className="viz-chart" />
           </div>
         </div>
