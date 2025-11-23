@@ -57,7 +57,7 @@ export default function Visualization() {
         </h1>
       </div>
 
-      <div className="card">
+      <div className="card visualization-card">
       <div className="chart-tabs">
         <div className="tab-list">
           <button
