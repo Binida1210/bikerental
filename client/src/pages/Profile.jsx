@@ -8,6 +8,9 @@ export default function Profile() {
   const [profile, setProfile] = useState(null);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [age, setAge] = useState("");
   const [reports, setReports] = useState([]);
   const [posts, setPosts] = useState([]);
   const [favorites, setFavorites] = useState([]);
@@ -22,6 +25,19 @@ export default function Profile() {
     fetchReports();
     fetchFavorites();
   }, []);
+
+  async function fetchProfile() {
+    try {
+      const res = await API.get("/profile");
+      setProfile(res.data);
+      setUsername(res.data.username);
+      setEmail(res.data.email || "");
+      setPhone(res.data.phone || "");
+      setAge(res.data.age ?? "");
+    } catch (e) {
+      console.error("Error fetching profile:", e);
+    }
+  }
 
   useEffect(() => {
     if (profile) fetchPosts();
@@ -123,7 +139,12 @@ export default function Profile() {
 
   async function save(e) {
     e.preventDefault();
-    await API.put("/profile", { username, password: password || undefined });
+    await API.put("/profile", {
+      password: password || undefined,
+      email: email || null,
+      phone: phone || null,
+      age: age === "" ? null : Number(age),
+    });
     alert("Saved");
     setPassword("");
     fetchProfile();
@@ -136,10 +157,7 @@ export default function Profile() {
       <h3>Profile</h3>
       <form onSubmit={save}>
         <div>
-          <input
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-          />
+          <input value={username} disabled />
         </div>
         <div>
           <input
@@ -147,6 +165,31 @@ export default function Profile() {
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+          />
+        </div>
+        <div>
+          <input
+            placeholder="email"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </div>
+        <div>
+          <input
+            placeholder="phone"
+            type="tel"
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+          />
+        </div>
+        <div>
+          <input
+            placeholder="age"
+            type="number"
+            min="0"
+            value={age}
+            onChange={(e) => setAge(e.target.value)}
           />
         </div>
         <button type="submit">Save</button>

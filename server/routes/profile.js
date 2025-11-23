@@ -20,23 +20,18 @@ function auth(req, res, next) {
 
 router.get("/", auth, async (req, res) => {
   const rows = await query(
-    "SELECT id, username, role FROM Users WHERE id = ?",
+    "SELECT id, username, role, email, phone, age FROM Users WHERE id = ?",
     [req.user.id]
   );
   res.json(rows[0]);
 });
 
 router.put("/", auth, async (req, res) => {
-  const { username, password } = req.body;
+  // allow updating password, email, phone, age. Username is intentionally immutable via the profile endpoint
+  const { password, email, phone, age } = req.body;
   const rows = await query("SELECT * FROM Users WHERE id = ?", [req.user.id]);
   const user = rows[0];
   if (!user) return res.status(404).json({ error: "Not found" });
-  if (username) {
-    await query("UPDATE Users SET username = ? WHERE id = ?", [
-      username,
-      req.user.id,
-    ]);
-  }
   if (password) {
     const hash = await bcrypt.hash(password, 10);
     await query("UPDATE Users SET passwordHash = ? WHERE id = ?", [
@@ -44,9 +39,29 @@ router.put("/", auth, async (req, res) => {
       req.user.id,
     ]);
   }
-  const updated = await query("SELECT id, username FROM Users WHERE id = ?", [
-    req.user.id,
-  ]);
+  // update other profile fields (allow null to clear values)
+  if (typeof email !== "undefined") {
+    await query("UPDATE Users SET email = ? WHERE id = ?", [
+      email || null,
+      req.user.id,
+    ]);
+  }
+  if (typeof phone !== "undefined") {
+    await query("UPDATE Users SET phone = ? WHERE id = ?", [
+      phone || null,
+      req.user.id,
+    ]);
+  }
+  if (typeof age !== "undefined") {
+    await query("UPDATE Users SET age = ? WHERE id = ?", [
+      age === null || age === "" ? null : Number(age),
+      req.user.id,
+    ]);
+  }
+  const updated = await query(
+    "SELECT id, username, role, email, phone, age FROM Users WHERE id = ?",
+    [req.user.id]
+  );
   res.json(updated[0]);
 });
 

@@ -27,6 +27,13 @@ components:
         role:
           type: string
           example: user
+        email:
+          type: string
+          format: email
+        phone:
+          type: string
+        age:
+          type: integer
     AuthResponse:
       type: object
       properties:
@@ -132,6 +139,13 @@ paths:
                   type: string
                 password:
                   type: string
+                email:
+                  type: string
+                  format: email
+                phone:
+                  type: string
+                age:
+                  type: integer
               required: [username, password]
       responses:
         "200":
@@ -408,6 +422,9 @@ paths:
               properties:
                 username: { type: string }
                 password: { type: string }
+                email: { type: string }
+                phone: { type: string }
+                age: { type: integer }
       responses:
         "200": { description: updated user basic info }
 

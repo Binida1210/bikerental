@@ -111,9 +111,40 @@ async function init() {
       id INT AUTO_INCREMENT PRIMARY KEY,
       username VARCHAR(255) NOT NULL UNIQUE,
       passwordHash VARCHAR(255) NOT NULL,
-      role VARCHAR(50) NOT NULL DEFAULT 'user'
+      role VARCHAR(50) NOT NULL DEFAULT 'user',
+      email VARCHAR(255) DEFAULT NULL,
+      phone VARCHAR(50) DEFAULT NULL,
+      age INT DEFAULT NULL
     );
   `);
+
+  // Ensure new columns exist in older DBs (safe to run repeatedly).
+  // ALTER TABLE ... IF NOT EXISTS is not supported on all MySQL versions —
+  // check column existence first and add only when missing.
+  try {
+    const haveEmail = await query("SHOW COLUMNS FROM Users LIKE 'email'");
+    if (!haveEmail || haveEmail.length === 0) {
+      await query("ALTER TABLE Users ADD COLUMN email VARCHAR(255) DEFAULT NULL");
+    }
+  } catch (e) {
+    console.warn("Could not ensure Users.email column:", e.message || e);
+  }
+  try {
+    const havePhone = await query("SHOW COLUMNS FROM Users LIKE 'phone'");
+    if (!havePhone || havePhone.length === 0) {
+      await query("ALTER TABLE Users ADD COLUMN phone VARCHAR(50) DEFAULT NULL");
+    }
+  } catch (e) {
+    console.warn("Could not ensure Users.phone column:", e.message || e);
+  }
+  try {
+    const haveAge = await query("SHOW COLUMNS FROM Users LIKE 'age'");
+    if (!haveAge || haveAge.length === 0) {
+      await query("ALTER TABLE Users ADD COLUMN age INT DEFAULT NULL");
+    }
+  } catch (e) {
+    console.warn("Could not ensure Users.age column:", e.message || e);
+  }
 
   await query(`
     CREATE TABLE IF NOT EXISTS Stations (

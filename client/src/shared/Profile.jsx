@@ -6,6 +6,9 @@ export default function Profile() {
   const [profile, setProfile] = useState(null);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [age, setAge] = useState("");
   const [reports, setReports] = useState([]);
   const [posts, setPosts] = useState([]);
   const [favorites, setFavorites] = useState([]);
@@ -104,6 +107,9 @@ export default function Profile() {
       const res = await API.get("/profile");
       setProfile(res.data);
       setUsername(res.data.username);
+      setEmail(res.data.email || "");
+      setPhone(res.data.phone || "");
+      setAge(res.data.age ?? "");
     } catch (e) {
       console.error("Error fetching profile:", e);
     }
@@ -146,7 +152,12 @@ export default function Profile() {
   async function save(e) {
     e.preventDefault();
     try {
-      await API.put("/profile", { username, password: password || undefined });
+      await API.put("/profile", {
+        password: password || undefined,
+        email: email || null,
+        phone: phone || null,
+        age: age === "" ? null : Number(age),
+      });
       alert("Saved");
       setPassword("");
       fetchProfile();
@@ -196,9 +207,9 @@ export default function Profile() {
               <input
                 type="text"
                 value={username}
-                onChange={(e) => setUsername(e.target.value)}
                 className="form-input"
                 required
+                disabled
               />
             </div>
             <div className="form-group">
@@ -210,6 +221,34 @@ export default function Profile() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="form-input"
+              />
+            </div>
+            <div className="form-group">
+              <label className="form-label">Email</label>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="form-input"
+              />
+            </div>
+            <div className="form-group">
+              <label className="form-label">Phone</label>
+              <input
+                type="tel"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                className="form-input"
+              />
+            </div>
+            <div className="form-group">
+              <label className="form-label">Age</label>
+              <input
+                type="number"
+                value={age}
+                onChange={(e) => setAge(e.target.value)}
+                className="form-input"
+                min="0"
               />
             </div>
             <div className="form-actions">

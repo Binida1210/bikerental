@@ -6,6 +6,9 @@ export default function AuthForm({ onLogin }) {
   const [isLogin, setIsLogin] = useState(true); // true for login, false for register
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [age, setAge] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
@@ -27,7 +30,13 @@ export default function AuthForm({ onLogin }) {
         onLogin(token);
       } else {
         // Register
-        await API.post("/auth/register", { username, password });
+        await API.post("/auth/register", {
+          username,
+          password,
+          email: email || undefined,
+          phone: phone || undefined,
+          age: age ? Number(age) : undefined,
+        });
         // Auto-login after register
         const res = await API.post("/auth/login", { username, password });
         const { token, user } = res.data;
@@ -83,6 +92,53 @@ export default function AuthForm({ onLogin }) {
               />
             </div>
           </div>
+
+          {!isLogin && (
+            <>
+              <div className="user-input-group">
+                <label htmlFor="email">Email</label>
+                <div className="user-input-with-icon">
+                  <input
+                    id="email"
+                    type="email"
+                    placeholder="Email (optional)"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="user-input"
+                  />
+                </div>
+              </div>
+
+              <div className="user-input-group">
+                <label htmlFor="phone">Phone</label>
+                <div className="user-input-with-icon">
+                  <input
+                    id="phone"
+                    type="tel"
+                    placeholder="Phone (optional)"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    className="user-input"
+                  />
+                </div>
+              </div>
+
+              <div className="user-input-group">
+                <label htmlFor="age">Age</label>
+                <div className="user-input-with-icon">
+                  <input
+                    id="age"
+                    type="number"
+                    min="0"
+                    placeholder="Age (optional)"
+                    value={age}
+                    onChange={(e) => setAge(e.target.value)}
+                    className="user-input"
+                  />
+                </div>
+              </div>
+            </>
+          )}
 
           <div className="user-input-group">
             <label htmlFor="password">Password</label>

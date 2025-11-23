@@ -7,22 +7,30 @@ const { query } = require("../db");
 const JWT_SECRET = process.env.JWT_SECRET || "secret-change-me";
 
 router.post("/register", async (req, res) => {
-  const { username, password } = req.body;
+  const { username, password, email, phone, age } = req.body;
   if (!username || !password)
-    return res.status(400).json({ error: "Missing fields" });
+    return res
+      .status(400)
+      .json({ error: "Missing fields (username/password required)" });
   const rows = await query("SELECT id FROM Users WHERE username = ?", [
     username,
   ]);
   if (rows.length) return res.status(400).json({ error: "User exists" });
   const hash = await bcrypt.hash(password, 10);
   const r = await query(
-    "INSERT INTO Users (username, passwordHash) VALUES (?, ?)",
-    [username, hash]
+    "INSERT INTO Users (username, passwordHash, email, phone, age) VALUES (?, ?, ?, ?, ?)",
+    [username, hash, email || null, phone || null, age ? Number(age) : null]
   );
   // mysql2 returns insertId in result object when using execute via pool.execute
   // our helper returns rows only for SELECT; when inserting, execute returns result set object — handle via direct pool
   // but pool.execute returns [rows, fields] where rows contains insertId for insert queries.
-  res.json({ id: r.insertId || undefined, username });
+  res.json({
+    id: r.insertId || undefined,
+    username,
+    email: email || null,
+    phone: phone || null,
+    age: age ? Number(age) : null,
+  });
 });
 
 router.post("/login", async (req, res) => {
@@ -56,7 +64,14 @@ router.post("/login", async (req, res) => {
   );
   res.json({
     token,
-    user: { id: user.id, username: user.username, role: user.role },
+    user: {
+      id: user.id,
+      username: user.username,
+      role: user.role,
+      email: user.email || null,
+      phone: user.phone || null,
+      age: user.age !== null ? Number(user.age) : null,
+    },
   });
 });
 
