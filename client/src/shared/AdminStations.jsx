@@ -377,14 +377,12 @@ export default function AdminStations() {
                   onClick={() => saveEdit(station.id)}
                   className="admin-btn admin-btn-success"
                 >
-                  <CheckCircle size={16} />
                   Save
                 </button>
                 <button
                   onClick={cancelEdit}
                   className="admin-btn admin-btn-secondary"
                 >
-                  <X size={16} />
                   Cancel
                 </button>
               </div>

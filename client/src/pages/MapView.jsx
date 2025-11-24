@@ -48,8 +48,12 @@ export default function MapView() {
                 <div className="station-tooltip__inner">
                   <div className="station-tooltip__title">{s.name}</div>
                   <div className="station-tooltip__meta">
-                    <span className="badge">{s.available} / {s.capacity}</span>
-                    <span className={`status ${s.open ? "open" : "closed"}`}>{s.open ? "Open" : "Closed"}</span>
+                    <span className="badge">
+                      {s.available} / {s.capacity}
+                    </span>
+                    <span className={`status ${s.open ? "open" : "closed"}`}>
+                      {s.open ? "Open" : "Closed"}
+                    </span>
                   </div>
                 </div>
               </Tooltip>

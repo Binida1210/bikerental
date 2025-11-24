@@ -1380,7 +1380,7 @@ body {
   padding: 8px 10px;
   box-shadow: 0 6px 18px rgba(12, 20, 30, 0.12);
   min-width: 150px;
-  border: 1px solid rgba(0,0,0,0.06);
+  border: 1px solid rgba(0, 0, 0, 0.06);
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -1406,7 +1406,7 @@ body {
   border-radius: 999px;
   padding: 3px 8px;
   font-weight: 600;
-  box-shadow: 0 1px 0 rgba(255,255,255,0.6) inset;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.6) inset;
 }
 .station-tooltip .status {
   padding: 3px 7px;
@@ -1414,15 +1414,21 @@ body {
   font-weight: 600;
   text-transform: none;
 }
-.station-tooltip .status.open { background: #e6ffed; color: #065f46; }
-.station-tooltip .status.closed { background: #fff1f2; color: #991b1b; }
+.station-tooltip .status.open {
+  background: #e6ffed;
+  color: #065f46;
+}
+.station-tooltip .status.closed {
+  background: #fff1f2;
+  color: #991b1b;
+}
 
 /* Slightly nicer popups: larger spacing and softer shadows */
 .leaflet-popup-content-wrapper {
   border-radius: 10px !important;
   box-shadow: 0 8px 20px rgba(12, 20, 30, 0.12) !important;
   padding: 12px !important;
-  border: 1px solid rgba(0,0,0,0.06) !important;
+  border: 1px solid rgba(0, 0, 0, 0.06) !important;
 }
 .leaflet-popup-content {
   margin: 0 !important;
@@ -1434,12 +1440,12 @@ body {
   width: 28px;
   height: 28px;
   border-radius: 50%;
-  background: radial-gradient(circle at 30% 25%, #ffffffaa, transparent), linear-gradient(180deg, #ff7ab6, #ff3b8d);
+  background: radial-gradient(circle at 30% 25%, #ffffffaa, transparent),
+    linear-gradient(180deg, #ff7ab6, #ff3b8d);
   border: 2px solid rgba(255, 255, 255, 0.95);
-  box-shadow: 0 6px 18px rgba(255, 85, 140, 0.18), 0 2px 6px rgba(0,0,0,0.12);
+  box-shadow: 0 6px 18px rgba(255, 85, 140, 0.18), 0 2px 6px rgba(0, 0, 0, 0.12);
   transform: translateY(-6px);
 }
-
 
 /* User Login styles */
 .user-login-container {
