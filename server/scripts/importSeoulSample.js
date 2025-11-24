@@ -57,12 +57,15 @@ async function importSeoulSample(url = DEFAULT_SAMPLE_URL) {
 
     for (const item of rows) {
       try {
-        const srcId = String(item.stationId || item.STATION_ID || item.id || "");
+        const srcId = String(
+          item.stationId || item.STATION_ID || item.id || ""
+        );
         if (!srcId) continue;
-        const name = item.stationName || item.STATION_NAME || item.name || "Unknown";
+        const name =
+          item.stationName || item.STATION_NAME || item.name || "Unknown";
         const lat = toNum(item.stationLatitude || item.latitude || item.lat);
         const lng = toNum(item.stationLongitude || item.longitude || item.lng);
-        const capacity = toNum(item.rackTotCnt) ?? 10;
+        const capacity = (toNum(item.rackTotCnt) ?? 10) * 6;
         const available = toNum(item.parkingBikeTotCnt) ?? 0;
         const shared = item.shared || null;
 
@@ -82,7 +85,16 @@ async function importSeoulSample(url = DEFAULT_SAMPLE_URL) {
         } else {
           await query(
             "INSERT INTO Stations (name, lat, lng, capacity, available, source, sourceId, shared, lastImportedAt) VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW())",
-            [name, lat ?? 0, lng ?? 0, capacity, available, "ddarungi", srcId, shared]
+            [
+              name,
+              lat ?? 0,
+              lng ?? 0,
+              capacity,
+              available,
+              "ddarungi",
+              srcId,
+              shared,
+            ]
           );
           result.imported += 1;
         }

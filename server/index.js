@@ -38,14 +38,19 @@ async function start() {
     // This makes development easier (sample data imports every minute). Set DDARUNGI_SAMPLE_ENABLED=false
     // to disable scheduled sample imports.
     const enabledSampleEnv = process.env.DDARUNGI_SAMPLE_ENABLED;
-    const enabledSample = typeof enabledSampleEnv === "undefined" ? true : String(enabledSampleEnv).toLowerCase() === "true";
-    const enabled = (process.env.DDARUNGI_ENABLED || "").toLowerCase() === "true";
+    const enabledSample =
+      typeof enabledSampleEnv === "undefined"
+        ? true
+        : String(enabledSampleEnv).toLowerCase() === "true";
+    const enabled =
+      (process.env.DDARUNGI_ENABLED || "").toLowerCase() === "true";
     if (enabledSample || enabled) {
       const { importSeoulSample } = require("./scripts/importSeoulSample");
       const runImport = async () => {
         try {
           console.log("Starting scheduled Ddarungi import...");
-          const url = process.env.DDARUNGI_SAMPLE_URL || process.env.DDARUNGI_API_URL;
+          const url =
+            process.env.DDARUNGI_SAMPLE_URL || process.env.DDARUNGI_API_URL;
           const res = await importSeoulSample(url);
           console.log("Ddarungi import finished:", res);
         } catch (e) {
