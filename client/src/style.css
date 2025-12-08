@@ -28,13 +28,11 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
     "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
-  background: linear-gradient(180deg, #f6f8fc 0%, #eef1f7 100%);
+  background-color: var(--background);
   color: var(--foreground);
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  font-size: 30px; /* 기본 14px → 대기업 기본 체계 */
-  line-height: 1.55;
 }
 
 .container {
@@ -113,8 +111,8 @@ body {
 
 .user-sidebar {
   width: var(--sidebar-width);
-  background-color: #f1f4f9;   /* 연한 블루그레이 */
-  border-right: 1px solid #d4d9e2;
+  background-color: #ffffff;
+  border-right: 1px solid var(--border);
   display: flex;
   flex-direction: column;
   position: fixed;
@@ -173,9 +171,8 @@ body {
 }
 
 .user-sidebar-link--active {
-  background-color: #e7efff;
-  color: #0e8354;
-  font-weight: 600;
+  background-color: var(--primary);
+  color: var(--primary-foreground);
 }
 
 .user-sidebar-link--active:hover {
