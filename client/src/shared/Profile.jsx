@@ -330,6 +330,10 @@ export default function Profile() {
                             <button
                               onClick={() => startEditReport(r)}
                               className="btn-link"
+                              style={{
+                                backgroundColor: "#f59e0b",
+                                border: "none",
+                              }}
                             >
                               Edit
                             </button>
@@ -408,6 +412,10 @@ export default function Profile() {
                           <button
                             onClick={() => startEditPost(p)}
                             className="btn-link"
+                            style={{
+                              backgroundColor: "#f59e0b",
+                              border: "none",
+                            }}
                           >
                             Edit
                           </button>
@@ -448,7 +456,7 @@ export default function Profile() {
                   </div>
                   <div className="item-actions">
                     <button
-                      className="btn-link"
+                      className="btn-link danger"
                       onClick={() => toggleFavoriteStation(f.Station?.id)}
                     >
                       Remove
